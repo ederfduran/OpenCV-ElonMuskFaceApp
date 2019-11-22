@@ -1,0 +1,10 @@
+Technically, there is not a big difference between passing cv::Mat or cv::Mat& just because this specific class uses smart pointers 
+internally. (This does not apply to arbitrary C++ objects.) 
+Input / Output Arguments: If the argument is an input argument I pass it as const reference const cv::Mat&. If it is an output or an 
+input-output argument then I pass it as cv::Mat&. Using references avoids copying the matrix header (the data is never copied unless 
+clone() is a called) and const marks my arguments as input arguments.
+
+Function return values: If a function returns a single matrix I usually return it as cv::Mat as it does not involve copying the data 
+(just the matrix header) and it further allows to mark the instance as const directly in the calling code: const cv::Mat mat = f(...); 
+This short notation also implicitly marks mat as read-only which is quite usefuly when using OpenMP in your programs as you do not need
+ to clare it shared or firstprivate.
